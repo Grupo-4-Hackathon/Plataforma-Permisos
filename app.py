@@ -32,7 +32,7 @@ if choice == "Registrarse":
         if new_user and new_password and new_direccion_wallet:
             crear_usuario(new_user, new_password, new_direccion_wallet, role)
             st.success("Usuario creado exitosamente. Por favor, inicia sesión.")
-            # No resetear aquí, ya que estamos usando la clave en un widget
+           
         else:
             st.error("Por favor, completa todos los campos.")
 
