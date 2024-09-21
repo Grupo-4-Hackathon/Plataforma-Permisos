@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.27;
 
 contract PermisoTrabajo {
     uint public contadorPermisos = 0;
@@ -48,9 +48,10 @@ contract PermisoTrabajo {
         uint id
     );
 
+    /*
     constructor(address _idAprobador, string memory _fechaInicio, string memory _fechaFin, string memory _tipo) {
         solicitarPermiso(_idAprobador, _fechaInicio, _fechaFin, _tipo);
-    }
+    }*/
 
     // Solicitar un nuevo permiso
     function solicitarPermiso(address idAprobador, string memory fechaInicio, string memory fechaFin, string memory tipo) public {
