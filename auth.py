@@ -21,12 +21,12 @@ def authenticate(username, password):
     return None
 
 # Función para crear un nuevo usuario
-def crear_usuario(nombre_usuario, contraseña, rol):
+def crear_usuario(nombre_usuario, contraseña, direccion_wallet, role):
     conn = get_db_connection()
     cursor = conn.cursor()
     hashed_password = hash_password(contraseña)
-    cursor.execute("INSERT INTO users (username, password, role) VALUES (%s, %s, %s)",
-                   (nombre_usuario, hashed_password, rol))
+    cursor.execute("INSERT INTO users (username, password, direccion_wallet, role) VALUES (%s, %s, %s, %s)",
+                   (nombre_usuario, hashed_password, direccion_wallet, role))
     conn.commit()
     cursor.close()
     conn.close()
