@@ -38,7 +38,7 @@ def obtener_permisos():
 def autorizar_permiso(permiso_id):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("UPDATE permisos SET estado = 'activo' WHERE id = %s", (permiso_id,))
+    cursor.execute("UPDATE permisos SET estado = 'aprobado' WHERE id = %s", (permiso_id,))
     conn.commit()
     cursor.close()
     conn.close()
@@ -62,13 +62,13 @@ def actualizar_estado_permisos():
     cursor = conn.cursor()
 
     # Actualiza permisos diarios que han pasado la fecha de fin
-    cursor.execute("UPDATE permisos SET estado = 'terminado' WHERE fecha_fin < CURDATE() AND estado = 'activo'")
+    cursor.execute("UPDATE permisos SET estado = 'terminado' WHERE fecha_fin < CURDATE() AND estado = 'aprobado'")
 
     # Actualiza permisos por horas que han pasado la hora de fin
     cursor.execute("""
         UPDATE permisos
         SET estado = 'terminado'
-        WHERE tiempo = 'horas' AND CONCAT(fecha_inicio, ' ', hora_fin) < NOW() AND estado = 'activo'
+        WHERE tiempo = 'horas' AND CONCAT(fecha_inicio, ' ', hora_fin) < NOW() AND estado = 'aprobado'
     """)
 
     conn.commit()

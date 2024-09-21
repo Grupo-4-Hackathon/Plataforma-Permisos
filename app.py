@@ -4,6 +4,16 @@ from db import agregar_permiso, obtener_permisos, autorizar_permiso, obtener_his
 from auth import authenticate, crear_usuario
 import plotly.express as px
 
+# Inicializar el estado de la sesión
+if "new_user" not in st.session_state:
+    st.session_state["new_user"] = ""
+if "new_password" not in st.session_state:
+    st.session_state["new_password"] = ""
+if "login_username" not in st.session_state:
+    st.session_state["login_username"] = ""
+if "login_password" not in st.session_state:
+    st.session_state["login_password"] = ""
+
 # Título de la aplicación
 st.title("Gestión de Permisos de Trabajo")
 
@@ -15,13 +25,16 @@ if choice == "Registrarse":
     st.subheader("Crear Nuevo Usuario")
     new_user = st.text_input("Nombre de Usuario", key="new_user")
     new_password = st.text_input("Contraseña", type='password', key="new_password")
+    new_direccion_wallet = st.text_input("Dirección Wallet", key="new_direccion_wallet")
     role = st.selectbox("Selecciona el rol del usuario", ["trabajador", "supervisor"], key="role")
     
     if st.button("Registrar"):
-        crear_usuario(new_user, new_password, role)
-        st.success("Usuario creado exitosamente. Por favor, inicia sesión.")
-        st.session_state["new_user"] = ""
-        st.session_state["new_password"] = ""
+        if new_user and new_password and new_direccion_wallet:
+            crear_usuario(new_user, new_password, new_direccion_wallet, role)
+            st.success("Usuario creado exitosamente. Por favor, inicia sesión.")
+            # No resetear aquí, ya que estamos usando la clave en un widget
+        else:
+            st.error("Por favor, completa todos los campos.")
 
 elif choice == "Iniciar Sesión":
     st.subheader("Iniciar Sesión")
@@ -38,7 +51,6 @@ elif choice == "Iniciar Sesión":
             st.session_state.username = username
             st.session_state.user_role = user_role
             st.sidebar.success("Inicio de sesión exitoso")
-            st.empty()
             actualizar_estado_permisos()  # Actualiza los permisos al iniciar sesión
         else:
             st.sidebar.error("Nombre de usuario o contraseña incorrectos.")
@@ -56,12 +68,9 @@ if st.session_state.get('logged_in', False):
     # Supervisor: Crear Permiso
     if option == "Crear Permiso":
         st.subheader("Formulario de Creación de Permisos")
-        if st.session_state.user_role == "supervisor":
-            nombre_trabajador = st.text_input("Nombre del Trabajador", key="nombre_trabajador")
-        else:
-            nombre_trabajador = st.session_state.username  # Nombre del trabajador es el nombre de usuario
+        nombre_trabajador = st.text_input("Nombre del Trabajador", key="nombre_trabajador") if st.session_state.user_role == "supervisor" else st.session_state.username
 
-        tipo_permiso = st.selectbox("Tipo de Permiso", ["Día Libre", "Vacaciones", "Cita Médica", "Permiso Personal", "Calamidad Doméstica", "Otros"], key="tipo_permiso")
+        tipo_permiso = st.selectbox("Tipo de Permiso", ["Día Libre", "Vacaciones", "Cita Médica", "Permiso Personal", "Calamidad Doméstica"], key="tipo_permiso")
         duracion_permiso = st.radio("Duración del Permiso", ["Día", "Horas"], key="duracion_permiso")
 
         if duracion_permiso == "Día":
@@ -95,7 +104,7 @@ if st.session_state.get('logged_in', False):
     # Trabajador: Solicitar Permiso
     elif option == "Solicitar Permiso":
         st.subheader("Formulario de Solicitud de Permiso")
-        tipo_permiso = st.selectbox("Tipo de Permiso", ["Día Libre", "Vacaciones", "Cita Médica", "Permiso Personal", "Calamidad Doméstica", "Otros"], key="solicitud_tipo_permiso")
+        tipo_permiso = st.selectbox("Tipo de Permiso", ["Día Libre", "Vacaciones", "Cita Médica", "Permiso Personal", "Calamidad Doméstica"], key="solicitud_tipo_permiso")
         duracion_permiso = st.radio("Duración del Permiso", ["Día", "Horas"], key="solicitud_duracion_permiso")
 
         if duracion_permiso == "Día":
