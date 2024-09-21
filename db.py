@@ -4,7 +4,7 @@ import pandas as pd
 # Configuración de la base de datos
 db_config = {
     'user': 'root',
-    'password': 'miller1',
+    'password': 'password',
     'host': 'localhost',
     'database': 'permisos'
 }
