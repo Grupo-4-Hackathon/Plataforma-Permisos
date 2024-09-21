@@ -47,7 +47,7 @@ def autorizar_permiso(permiso_id):
 def obtener_historial_permisos(username):
     conn = get_db_connection()
     query = """
-    SELECT id, tipo, fecha_inicio, fecha_fin, estado
+    SELECT *
     FROM permisos
     WHERE usuario_solicitante = %s
     ORDER BY fecha_inicio DESC
