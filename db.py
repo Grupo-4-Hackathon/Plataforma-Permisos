@@ -3,10 +3,10 @@ import pandas as pd
 
 # Configuración de la base de datos
 db_config = {
-    'user': 'root',
-    'password': 'password',
-    'host': 'localhost',
-    'database': 'permisos'
+    'user': 'admin',  
+    'password': '#3eLcDbd2024*',  
+    'host': 'permisos.chqagagiyz8f.us-east-1.rds.amazonaws.com',  
+    'database': 'permisos',  
 }
 
 # Conexión a la base de datos
