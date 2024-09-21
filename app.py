@@ -52,6 +52,7 @@ if st.session_state.get('logged_in', False):
     else:
         option = st.sidebar.selectbox("Selecciona una opción:", ["Solicitar Permiso", "Ver Historial de Permisos"])
 
+    # match
     # Supervisor: Crear Permiso
     if option == "Crear Permiso":
         st.subheader("Formulario de Creación de Permisos")
